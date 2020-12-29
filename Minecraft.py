@@ -172,7 +172,7 @@ class minecraft(commands.Cog):
                except ValueError:
                     await ctx.send("You have no vc created use t!vc create [Name] to create one.")
      @vc.command(name="gui", description="Brings up gui for making you own voice channel")
-     async def gui(ctx, choice):
+     async def gui(self, ctx, choice):
           #gets channel for bot message
           
           channel = self.bot.get_channel(793599653387567123)
