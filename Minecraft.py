@@ -174,7 +174,8 @@ class minecraft(commands.Cog):
      @vc.command(name="gui", description="Brings up gui for making you own voice channel")
      async def gui(ctx, choice):
           #gets channel for bot message
-          channel = bot.get_channel(793599653387567123)
+          
+          channel = self.bot.get_channel(793599653387567123)
           user = ctx.message.author
           #vcrole1 = get(user.guild.roles, id=703562188224331777)
           messagechannel = ctx.message.channel.id
