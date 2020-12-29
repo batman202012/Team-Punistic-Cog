@@ -141,33 +141,33 @@ class minecraft(commands.Cog):
                with open('/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json', 'w') as vcWrite:
                     try:
                          channels = ctx.guild.voice_channels
-                            for channel in channels:
+                         for channel in channels:
                               if channel.name == vcName:
                                    await channel.delete()
                                    print("deleted")
                               else:
-                                     pass
+                                   pass
                          x.pop(owner, None)
                          json.dump(x, vcWrite)
                          #does a check to see if we delete the last entry in json files. Adds {} to json file because json doesn't play nice with empty files.
                          if x == "":
-                               x = "{}"
+                              x = "{}"
                          await ctx.send("Succesfully deleted {2}'s voice channel {0} because {1}".format(vcName, reason, owner))
                     except ValueError:
-                            await ctx.send("Failed to delete your vc.")
+                         await ctx.send("Failed to delete your vc.")
           else:
-                 if noVC == "true":
-                     await ctx.send("You can't delete a VC if you don't have one.")
+               if noVC == "true":
+                    await ctx.send("You can't delete a VC if you don't have one.")
      @vc.command(name='name', description='Gives you the name of your personal vc, not really useful since your voice channel deletes 5 minutes after being empty.')
      async def name(self, ctx):
           owner = ctx.author.name
           with open('/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json', 'r') as vcOwners:
                try:
-                   x = json.load(vcOwners)
-                   for vcOwnList, vcNameList in x.items():
+                    x = json.load(vcOwners)
+                    for vcOwnList, vcNameList in x.items():
                         if vcOwnList == owner:
                              await ctx.send("Your personal vc is named {0}.".format(vcNameList))
-                        else:
+                         else:
                              pass
                except ValueError:
                     await ctx.send("You have no vc created use t!vc create [Name] to create one.")
