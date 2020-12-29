@@ -1,0 +1,20 @@
+{
+    "name": "minecraft",
+    "short": "TPUN Minecraft cog",
+    "description": "Team Punistic red cog for checking minecraft server",
+    "end_user_data_statement": "This cog does not persistently store any data or metadata about users.",
+    "install_msg": "Congrats",
+    "author": [
+        "Nado"
+    ],
+    "required_cogs": {},
+    "requirements": [],
+    "tags": [
+        "Minecraft",
+        "Tpun"
+    ],
+    "min_bot_version": "3.3.10",
+    "hidden": false,
+    "disabled": false,
+    "type": "COG"
+}
