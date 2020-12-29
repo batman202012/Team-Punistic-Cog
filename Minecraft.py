@@ -165,7 +165,7 @@ class minecraft(commands.Cog):
                try:
                     x = json.load(vcOwners)
                     for vcOwnList, vcNameList in x.items():
-                        if vcOwnList == owner:
+                         if vcOwnList == owner:
                              await ctx.send("Your personal vc is named {0}.".format(vcNameList))
                          else:
                              pass
