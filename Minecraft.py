@@ -1,7 +1,6 @@
 
 from typing import Literal
 import json
-import discord
 from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
@@ -10,6 +9,7 @@ from discord import CategoryChannel
 import asyncio
 mcserver = MinecraftServer.lookup("45.79.54.32:25565")
 RequestType = Literal["discord_deleted_user", "owner", "user", "user_strict"]
+import datetime
 
 class minecraft(commands.Cog):
      """
