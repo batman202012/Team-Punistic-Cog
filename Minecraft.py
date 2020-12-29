@@ -193,7 +193,7 @@ class minecraft(commands.Cog):
                          mess1 = await channel.send(embed=embed)
                          await mess1.add_reaction('<a:check:793600962081587201>')
 
-                         def check(reaction, user):
+                         async def check(reaction, user):
 
                               return reaction.message == mess1 and str(reaction.emoji) ==  '<a:check:793600962081587201>'
 
