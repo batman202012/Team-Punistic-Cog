@@ -171,3 +171,34 @@ class minecraft(commands.Cog):
                              pass
                except ValueError:
                     await ctx.send("You have no vc created use t!vc create [Name] to create one.")
+     @vc.command(name="gui", description="Brings up gui for making you own voice channel")
+     async def gui(ctx, choice):
+          #gets channel for bot message
+          channel = bot.get_channel(793599653387567123)
+          user = ctx.message.author
+          #vcrole1 = get(user.guild.roles, id=703562188224331777)
+          messagechannel = ctx.message.channel.id
+          if ctx.message.channel.id == 793599653387567123:
+               if choice == '1':
+                    #if any(role.id == 703562188224331777 for role in ctx.message.author.roles):
+                         #await user.remove_roles(vcrole1)
+                         #await ctx.send("not important message")
+                         #messtag1 = await channel.send('not important') 
+                         #await messtag1.delete(delay=None)
+
+                         embed = discord.Embed(color=0xe02522, title='Voice Channel Creator', description= 'Creates a personal voice channel.')
+                         embed.set_footer(text='This gui is opened by t!vc gui. It allows you to create your own voice channel that will delete itself after 1 minute of being empty on creation or 5 minutes of being empty. You can delete it by using t!vc delete <reason>')
+                         embed.timestamp = datetime.datetime.utcnow()
+
+                         mess1 = await channel.send(embed=embed)
+                         await mess1.add_reaction('<a:check:793600962081587201>')
+
+                         def check(reaction, user):
+
+                              return reaction.message == mess1 and str(reaction.emoji) ==  '<a:check:793600962081587201>'
+
+                              await bot.wait_for('reaction_add', check=check)
+                              channeldone = bot.get_channel(793599653387567123)
+                              await channeldone.send('test')
+                              users = await reaction.users().flatten()
+                              print(users)
