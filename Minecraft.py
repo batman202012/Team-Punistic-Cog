@@ -148,6 +148,9 @@ class minecraft(commands.Cog):
                                  pass
                         x.pop(owner, None)
                         json.dump(x, vcWrite)
+                        #does a check to see if we delete the last entry in json files. Adds {} to json file because json doesn't play nice with empty files.
+                        if x == "":
+                            x = "{}"
                         await ctx.send("Succesfully deleted {2}'s voice channel {0} because {1}".format(vcName, reason, owner))
                    except ValueError:
                         await ctx.send("Failed to delete your vc.")
