@@ -26,13 +26,13 @@ class minecraft(commands.Cog):
                force_registration=True,
           )
     
-     async def checks(self, vcName, id, empty, ctx):
+     async def checks(self, id, empty, ctx):
           print(id)
-          channel = self.bot.get_channel(int(id))
+          channel = self.bot.get_channel(id)
           await asyncio.sleep(60)
           if len(channel.members) == 0:
                empty.set_result('VC is Empty!')
-               print("0 members in " + vcName)
+               print("0 members in " + str(channel.name))
                reason = "channel is empty"
                await asyncio.sleep(300)
                await minecraft.delete(self, ctx, reason)
@@ -47,7 +47,6 @@ class minecraft(commands.Cog):
                     await self.create(ctx, str(ctx.message.author.activity.name))
                     print(str(ctx.message.author.activity.name))
                     await mess1.delete()
-                    print("Game" + ctx.message.author.activity.name)
                except IndexError:
                     await ctx.send("You can't make a game channel if you aren't playing a game.")
                     print("no activity")
@@ -110,10 +109,10 @@ class minecraft(commands.Cog):
                     try:
                          x = json.load(vcOwners)
                          #closes json file from read
-                         for vcOwnList, vcNameList in x.items():
+                         for vcOwnList, vcId in x.items():
                               #check if user has a vc by going through vcOwners
                               if vcOwnList == owner:
-                                   await ctx.send("You already have a vc created named {0}".format(vcNameList))
+                                   await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
                                    run = "false"
                          if run == "false":
                               pass
@@ -121,14 +120,14 @@ class minecraft(commands.Cog):
                                    #create vc with arg as name
                                    channel = await ctx.guild.create_voice_channel(vcName, category=category)
                                    #create json object nC
-                                   nC = {owner : vcName}
+                                   nC = {owner : vcId}
                                    x.update(nC)
                                    print(x)
                                    #add vcOwner and vcName to json
-                                   await ctx.send("VC created by {0} with name {1}".format(owner, vcName))
-                                   print(channel.id)
+                                   await ctx.send("VC created by {0} with name {1}".format(owner, str(self.bot.get_channel(vcId).name)))
+                                   print(vcId)
                                    empty = asyncio.Future()
-                                   asyncio.ensure_future(self.checks(vcName, channel.id, empty, ctx))
+                                   asyncio.ensure_future(self.checks(vcId, empty, ctx))
                     except ValueError:
                          if x == "":
                               x = {}
@@ -152,22 +151,19 @@ class minecraft(commands.Cog):
           with open('/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json', 'r') as vcOwners:
                try:
                     x = json.load(vcOwners)
-                    for vcOwnList, vcNameList in x.items():
+                    for vcOwnList, idList in x.items():
                          if vcOwnList == owner:
                               run = "true"
-                              vcName = vcNameList
+                              vcId = idList
                except ValueError:
                     await ctx.send("Failed to load vc Owners.")
           if run == "true":
                with open('/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json', 'w') as vcWrite:
                     try:
-                         channels = ctx.guild.voice_channels
-                         for channel in channels:
-                              if channel.name == vcName:
-                                   await channel.delete()
-                                   print("deleted")
-                              else:
-                                   pass
+                         channel = self.bot.get_channel(vcId)
+                         vcName = str(channel.name)
+                         await channel.delete()
+                         print("deleted")
                          x.pop(owner, None)
                          json.dump(x, vcWrite)
                          #does a check to see if we delete the last entry in json files. Adds {} to json file because json doesn't play nice with empty files.
