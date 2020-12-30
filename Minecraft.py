@@ -43,11 +43,11 @@ class minecraft(commands.Cog):
           return ReactionPredicate.with_emojis(emojis, mess1)
      async def emojiSorter(self, ctx, emoji, mess1):
           if emoji == "🎮":
-               try:
+               if ctx.message.author.activity != None:
                     await self.create(ctx, str(ctx.message.author.activity.name))
                     print(str(ctx.message.author.activity.name))
                     await mess1.delete()
-               except IndexError:
+               else:
                     await ctx.send("You can't make a game channel if you aren't playing a game.")
                     print("no activity")
                     await mess1.delete()
