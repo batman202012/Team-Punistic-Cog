@@ -91,7 +91,7 @@ class minecraft(commands.Cog):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
           print("ran vc create function")
-          if vcName == None:
+          if vcName == "":
                await ctx.send("You need to type a voice channel name t!vc create ['Name']")
                print("vcName is equal to None")
           else:
