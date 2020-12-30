@@ -5,11 +5,13 @@ from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
 from mcstatus import MinecraftServer
-from discord import CategoryChannel
+import discord
 import asyncio
 mcserver = MinecraftServer.lookup("45.79.54.32:25565")
 RequestType = Literal["discord_deleted_user", "owner", "user", "user_strict"]
 import datetime
+from redbot.core.utils.predicates import ReactionPredicate
+from redbot.core.utils.menus import start_adding_reactions
 
 class minecraft(commands.Cog):
      """
@@ -37,6 +39,29 @@ class minecraft(commands.Cog):
                await empty.set_result("Channel deleted")
           else:
                await minecraft.checks(self, vcName, id, empty, ctx)
+     def pred(self, emojis, mess1):
+          return ReactionPredicate.with_emojis(emojis, mess1)
+     async def emojiSorter(self, ctx, emoji, mess1):
+          if emoji == "🎮":
+               try:
+                    await self.create(ctx, str(ctx.message.author.activities[0]))
+                    print(str(ctx.message.author.activities[0]))
+                    await mess1.delete()
+                    print("Game" + ctx.message.author.activities[0])
+               except IndexError:
+                    await ctx.send("You can't make a game channel if you aren't playing a game.")
+                    print("no activity")
+                    await mess1.delete()
+          elif emoji == "📱":
+               print(str(ctx.author.name) + "'s social channel")
+               await self.create(ctx, str(ctx.author.name) + "'s social channel")
+               print("social")
+               await mess1.delete()
+          elif emoji == "❓":
+               print(str(ctx.author.name) + "'s pvc")
+               await self.create(ctx, str(ctx.author.name) + "'s pvc")
+               print("Other")
+               await mess1.delete()
 
      async def red_delete_data_for_user(self, *, requester: RequestType, user_id: int) -> None:
           # TODO: Replace this with the proper end user data removal handling.
@@ -92,22 +117,16 @@ class minecraft(commands.Cog):
                               pass
                          else:
                                    #create vc with arg as name
-                                   await ctx.guild.create_voice_channel(vcName)
+                                   channel = await ctx.guild.create_voice_channel(vcName)
                                    #create json object nC
                                    nC = {owner : vcName}
                                    x.update(nC)
                                    print(x)
                                    #add vcOwner and vcName to json
                                    await ctx.send("VC created by {0} with name {1}".format(owner, vcName))
-                                   channels = ctx.guild.voice_channels
-                                   for channel in channels:
-                                        if channel.name == vcName:
-                                             print(channel.id)
-                                             loop = asyncio.get_event_loop()
-                                             empty = asyncio.Future()
-                                             asyncio.ensure_future(minecraft.checks(self, vcName, channel.id, empty, ctx))
-                                        else:
-                                             pass
+                                   print(channel.id)
+                                   empty = asyncio.Future()
+                                   asyncio.ensure_future(self.checks(vcName, channel.id, empty, ctx))
                     except ValueError:
                          if x == "":
                               x = {}
@@ -172,34 +191,33 @@ class minecraft(commands.Cog):
                except ValueError:
                     await ctx.send("You have no vc created use t!vc create [Name] to create one.")
      @vc.command(name="gui", description="Brings up gui for making you own voice channel")
-     async def gui(self, ctx, choice):
+     async def gui(self, ctx):
           #gets channel for bot message
           
           channel = self.bot.get_channel(793599653387567123)
-          user = ctx.message.author
-          #vcrole1 = get(user.guild.roles, id=703562188224331777)
-          messagechannel = ctx.message.channel.id
+          #vcrole1 = get(creator.guild.roles, id=703562188224331777)
           if ctx.message.channel.id == 793599653387567123:
-               if choice == '1':
-                    #if any(role.id == 703562188224331777 for role in ctx.message.author.roles):
-                         #await user.remove_roles(vcrole1)
-                         #await ctx.send("not important message")
-                         #messtag1 = await channel.send('not important') 
-                         #await messtag1.delete(delay=None)
+               #if any(role.id == 703562188224331777 for role in ctx.message.author.roles):
+                    #await creator.remove_roles(vcrole1)
+                    #await ctx.send("not important message")
+                    #messtag1 = await channel.send('not important') 
+                    #await messtag1.delete(delay=None)
 
-                         embed = discord.Embed(color=0xe02522, title='Voice Channel Creator', description= 'Creates a personal voice channel.')
-                         embed.set_footer(text='This gui is opened by t!vc gui. It allows you to create your own voice channel that will delete itself after 1 minute of being empty on creation or 5 minutes of being empty. You can delete it by using t!vc delete <reason>')
-                         embed.timestamp = datetime.datetime.utcnow()
+                    embed = discord.Embed(color=0xe02522, title='Voice Channel Creator', description= 'Creates a personal voice channel.')
+                    embed.set_footer(text='This gui is opened by t!vc gui. It allows you to create your own voice channel that will delete itself after 1 minute of being empty on creation or 5 minutes of being empty. You can delete it by using t!vc delete <reason>')
+                    embed.timestamp = datetime.datetime.utcnow()
 
-                         mess1 = await channel.send(embed=embed)
-                         await mess1.add_reaction('<a:check:793600962081587201>')
-
-                         async def check(reaction, user):
-
-                              return reaction.message == mess1 and str(reaction.emoji) ==  '<a:check:793600962081587201>'
-
-                              await bot.wait_for('reaction_add', check=check)
-                              channeldone = bot.get_channel(793599653387567123)
-                              await channeldone.send('test')
-                              users = await reaction.users().flatten()
-                              print(users)
+                    mess1 = await channel.send(embed=embed)
+                    emojis = ["🎮","❓", "📱"]
+                    start_adding_reactions(mess1, emojis)
+                    try:
+                         result = await ctx.bot.wait_for("reaction_add", timeout=60.0, check=self.pred(emojis, mess1))
+                         print(result[0])
+                         emoji = str(result[0])
+                         await self.emojiSorter(ctx, emoji, mess1)
+                    except asyncio.TimeoutError:
+                         await channel.send('Voice channel gui timed out.')
+                         await mess1.delete()
+                    else:
+                         pass
+                    
