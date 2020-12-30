@@ -27,14 +27,11 @@ class minecraft(commands.Cog):
           )
     
      async def checks(self, id, empty, ctx):
-          print(id)
           channel = self.bot.get_channel(id)
           await asyncio.sleep(60)
           if len(channel.members) == 0:
                empty.set_result('VC is Empty!')
-               print("0 members in " + str(channel.name))
                reason = "channel is empty"
-               await asyncio.sleep(300)
                await minecraft.delete(self, ctx, reason)
                await empty.set_result("Channel deleted")
           else:
@@ -45,21 +42,15 @@ class minecraft(commands.Cog):
           if emoji == "🎮":
                if ctx.message.author.activity != None:
                     await self.create(ctx, str(ctx.message.author.activity.name))
-                    print(str(ctx.message.author.activity.name))
                     await mess1.delete()
                else:
                     await ctx.send("You can't make a game channel if you aren't playing a game.")
-                    print("no activity")
                     await mess1.delete()
           elif emoji == "📱":
-               print(str(ctx.author.name) + "'s social channel")
                await self.create(ctx, str(ctx.author.name) + "'s social channel")
-               print("social")
                await mess1.delete()
           elif emoji == "❓":
-               print(str(ctx.author.name) + "'s pvc")
                await self.create(ctx, str(ctx.author.name) + "'s pvc")
-               print("Other")
                await mess1.delete()
 
      async def red_delete_data_for_user(self, *, requester: RequestType, user_id: int) -> None:
@@ -90,8 +81,8 @@ class minecraft(commands.Cog):
           elif arg == 'create':
                await ctx.send("Creates a voice channel with [name] t!vc create [Name]. You can only have 1 vc. VC deletes after 5 minutes of inactivity. You must join your vc within 1 minute or it will be deleted.")
           elif arg == 'delete':
-               await ctx.send("Deletes your personal channel, requires a reason t!delete reason. Channels delete on their own after 5 minutes of being empty.")
-     @vc.command(name='create', description='Creates a voice channel with [name] t!vc create [Name]. You can only have 1 vc. VC deletes after 5 minutes of inactivity. You must join your vc within 1 minute or it will be deleted.')
+               await ctx.send("Deletes your personal channel, requires a reason t!delete reason. Channels delete on their own after 1 minute of being empty.")
+     @vc.command(name='create', description='Creates a voice channel with [name] t!vc create [Name]. You can only have 1 vc. VC deletes after 1 minute of inactivity. You must join your vc within 1 minute or it will be deleted.')
      async def create(self, ctx, arg):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
@@ -123,10 +114,9 @@ class minecraft(commands.Cog):
                                    vcId = channel.id
                                    nC = {owner : vcId}
                                    x.update(nC)
-                                   print(x)
                                    #add vcOwner and vcName to json
                                    await ctx.send("VC created by {0} with name {1}".format(owner, str(channel.name)))
-                                   print(vcId)
+                                   await asyncio.sleep(60)
                                    empty = asyncio.Future()
                                    asyncio.ensure_future(self.checks(vcId, empty, ctx))
                     except ValueError:
@@ -138,7 +128,7 @@ class minecraft(commands.Cog):
                     try:
                          json.dump(x, vcWrite)
                     except ValueError:
-                         print("Json write failed.")
+                         print("Minecraft.py Minecraft.create Json write failed.")
     
      @vc.command(name='delete', description='Deletes your personal channel, can include a reason t!vc delete "reason". Channels delete on their own after 5 minutes of being empty.')
      async def delete(self, ctx, reason = None):
@@ -203,7 +193,7 @@ class minecraft(commands.Cog):
                     #await messtag1.delete(delay=None)
 
                     embed = discord.Embed(color=0xe02522, title='Voice Channel Creator', description= 'Creates a personal voice channel.')
-                    embed.set_footer(text='This gui is opened by /vc gui. It allows you to create your own voice channel that will delete itself after 1 minute of being empty on creation or 5 minutes of being empty. You can delete it by using /vc delete <reason>. 🎮 for game channel, 📱 for social channel, ❓ for other channel')
+                    embed.set_footer(text='This gui is opened by /vc gui. It allows you to create your own voice channel that will delete itself after 1 minute of being empty. You can delete it by using /vc delete <reason>. 🎮 for game channel, 📱 for social channel, ❓ for other channel')
                     embed.timestamp = datetime.datetime.utcnow()
 
                     mess1 = await channel.send(embed=embed)
