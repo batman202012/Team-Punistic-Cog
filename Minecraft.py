@@ -118,6 +118,7 @@ class minecraft(commands.Cog):
                          if run:
                               #create vc with arg as name
                               channel = await ctx.guild.create_voice_channel(vcName, category=category)
+                              print("created vc")
                               #create json object nC
                               vcId = channel.id
                               nC = {owner : vcId}
@@ -127,17 +128,10 @@ class minecraft(commands.Cog):
                               await asyncio.sleep(60)
                               empty = asyncio.Future()
                               asyncio.ensure_future(self.checks(vcId, empty, ctx))
-                              print("created vc")
                     except ValueError:
                          if x == "":
-                              if vcName == "no activity":
-                                        await ctx.send("You can't create a game vc if you're not playing a game.")
-                                        print("no game activity")
                               x = {}
                          else:
-                              if vcName == "no activity":
-                                        await ctx.send("You can't create a game vc if you're not playing a game.")
-                                        print("no game activity")
                               await ctx.send("Something broke.")
                               print("something broke")
                               pass
