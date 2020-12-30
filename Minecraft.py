@@ -82,7 +82,7 @@ class minecraft(commands.Cog):
                await ctx.send("Creates a voice channel with <'name'> /vc create <'Name'>. You can only have 1 vc. VC deletes after 5 minutes of inactivity. You must join your vc within 1 minute or it will be deleted.")
           elif arg == 'delete':
                await ctx.send("Deletes your personal channel, requires a reason /delete ['reason']. Channels delete on their own after 1 minute of being empty.")
-          elif arg == 'gui'
+          elif arg == 'gui':
                await ctx.send("Opens the vc creation gui. use /vc gui")
           else:
                await ctx.send("That is not a valid command. Available commands are /vc create, /vc delete [;reason'], /vc gui, /vc help <command>")
