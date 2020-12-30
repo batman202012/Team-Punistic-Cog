@@ -87,10 +87,10 @@ class minecraft(commands.Cog):
           else:
                await ctx.send("That is not a valid command. Available commands are /vc create, /vc delete [;reason'], /vc gui, /vc help <command>")
      @vc.command(name='create', description="Creates a voice channel with <'name'> /vc create <'Name'>. You can only have 1 vc. VC deletes after 1 minute of inactivity. You must join your vc within 1 minute or it will be deleted.")
-     async def create(self, ctx, vcName):
+     async def create(self, ctx, *arg):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
-          if vcName == "":
+          if *arg == "":
                await ctx.send("You need to type a voice channel name t!vc create ['Name']")
           else:
                #finds out who called the command, saves author as owner
@@ -106,16 +106,16 @@ class minecraft(commands.Cog):
                               if vcOwnList == owner:
                                    await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
                               else:
-                                   if vcName == "no activity":
+                                   if *arg == "no activity":
                                         await ctx.send("You can't create a game vc if you're not playing a game.")
                                    else:
                                         #create vc with arg as name
-                                        channel = await ctx.guild.create_voice_channel(vcName, category=category)
+                                        channel = await ctx.guild.create_voice_channel(*arg, category=category)
                                         #create json object nC
                                         vcId = channel.id
                                         nC = {owner : vcId}
                                         x.update(nC)
-                                        #add vcOwner and vcName to json
+                                        #add vcOwner and vcId to json
                                         await ctx.send("VC created by {0} with name {1}".format(owner, str(channel.name)))
                                         await asyncio.sleep(60)
                                         empty = asyncio.Future()
@@ -155,7 +155,6 @@ class minecraft(commands.Cog):
                          channel = self.bot.get_channel(vcId)
                          vcName = str(channel.name)
                          await channel.delete()
-                         print("deleted")
                          x.pop(owner, None)
                          json.dump(x, vcWrite)
                          #does a check to see if we delete the last entry in json files. Adds {} to json file because json doesn't play nice with empty files.
@@ -202,7 +201,6 @@ class minecraft(commands.Cog):
                     start_adding_reactions(mess1, emojis)
                     try:
                          result = await ctx.bot.wait_for("reaction_add", timeout=60.0, check=self.pred(emojis, mess1))
-                         print(result[0])
                          emoji = str(result[0])
                          await self.emojiSorter(ctx, emoji, mess1)
                     except asyncio.TimeoutError:
