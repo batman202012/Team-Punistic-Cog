@@ -44,10 +44,10 @@ class minecraft(commands.Cog):
      async def emojiSorter(self, ctx, emoji, mess1):
           if emoji == "🎮":
                try:
-                    await self.create(ctx, str(ctx.message.author.activities[0]))
-                    print(str(ctx.message.author.activities[0]))
+                    await self.create(ctx, str(ctx.message.author.activity.name))
+                    print(str(ctx.message.author.activity.name))
                     await mess1.delete()
-                    print("Game" + ctx.message.author.activities[0])
+                    print("Game" + ctx.message.author.activity.name)
                except IndexError:
                     await ctx.send("You can't make a game channel if you aren't playing a game.")
                     print("no activity")
