@@ -91,7 +91,7 @@ class minecraft(commands.Cog):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
           run = "true"
-          if arg == "":
+          if name == "":
                await ctx.send("You need to type a voice channel name t!vc create ['Name']")
           else:
                #finds out who called the command, saves author as owner
