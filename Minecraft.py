@@ -44,8 +44,8 @@ class minecraft(commands.Cog):
      async def emojiSorter(self, ctx, emoji, mess1):
           if emoji == "🎮":
                try:
-                    await self.create(ctx, str(ctx.message.author.activities[0]))
-                    print(str(ctx.message.author.activities[0]))
+                    await self.create(str(ctx.message.author.activities[0]), ctx)
+                    print(ctx, str(ctx.message.author.activities[0]))
                     await mess1.delete()
                     print("Game" + ctx.message.author.activities[0])
                except IndexError:
@@ -54,7 +54,7 @@ class minecraft(commands.Cog):
                     await mess1.delete()
           elif emoji == "📱":
                print(str(ctx.author.name) + "'s social channel")
-               await self.create(ctx, str(ctx.author.name) + "'s social channel")
+               await self.create(ctx, str(ctx.author.name) + "'s social channel", ctx)
                print("social")
                await mess1.delete()
           elif emoji == "❓":
@@ -117,7 +117,7 @@ class minecraft(commands.Cog):
                               pass
                          else:
                                    #create vc with arg as name
-                                   channel = await ctx.guild.create_voice_channel(vcName)
+                                   channel = await ctx.guild.create_voice_channel(vcName, category="404896049715609600")
                                    #create json object nC
                                    nC = {owner : vcName}
                                    x.update(nC)
