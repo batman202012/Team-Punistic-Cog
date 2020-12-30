@@ -141,7 +141,7 @@ class minecraft(commands.Cog):
                          print("Json write failed.")
     
      @vc.command(name='delete', description='Deletes your personal channel, can include a reason t!vc delete "reason". Channels delete on their own after 5 minutes of being empty.')
-     async def delete(self, ctx, reason):
+     async def delete(self, ctx, [reason]):
           noVC = "true"
           if reason == None:
                reason = "user deleted their own channel"
