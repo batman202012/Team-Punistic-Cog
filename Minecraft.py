@@ -98,6 +98,10 @@ class minecraft(commands.Cog):
           else:
                #finds out who called the command, saves author as owner
                owner = ctx.author.name
+               if vcName == "no activity":
+                    await ctx.send("You can't create a game vc if you're not playing a game.")
+                    print("no game activity")
+                    run = False
                #opens json file for read
                with open(jsonPath, 'r') as vcOwners:
                #load vcOwners
@@ -110,11 +114,6 @@ class minecraft(commands.Cog):
                                    await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
                                    print("already has vc")
                                    run = False
-                              else:
-                                   if vcName == "no activity":
-                                        await ctx.send("You can't create a game vc if you're not playing a game.")
-                                        print("no game activity")
-                                        run = False
                          if run:
                               #create vc with arg as name
                               channel = await ctx.guild.create_voice_channel(vcName, category=category)
