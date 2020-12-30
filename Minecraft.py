@@ -87,10 +87,10 @@ class minecraft(commands.Cog):
           else:
                await ctx.send("That is not a valid command. Available commands are /vc create, /vc delete [;reason'], /vc gui, /vc help <command>")
      @vc.command(name='create', description="Creates a voice channel with <'name'> /vc create <'Name'>. You can only have 1 vc. VC deletes after 1 minute of inactivity. You must join your vc within 1 minute or it will be deleted.")
-     async def create(self, ctx, *arg):
+     async def create(self, ctx, vcName):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
-          if *arg == "":
+          if vcName == None:
                await ctx.send("You need to type a voice channel name t!vc create ['Name']")
           else:
                #finds out who called the command, saves author as owner
@@ -106,11 +106,11 @@ class minecraft(commands.Cog):
                               if vcOwnList == owner:
                                    await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
                               else:
-                                   if *arg == "no activity":
+                                   if vcName == "no activity":
                                         await ctx.send("You can't create a game vc if you're not playing a game.")
                                    else:
                                         #create vc with arg as name
-                                        channel = await ctx.guild.create_voice_channel(*arg, category=category)
+                                        channel = await ctx.guild.create_voice_channel(vcName, category=category)
                                         #create json object nC
                                         vcId = channel.id
                                         nC = {owner : vcId}
