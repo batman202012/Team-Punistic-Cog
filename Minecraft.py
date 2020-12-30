@@ -94,7 +94,7 @@ class minecraft(commands.Cog):
                await ctx.send("Deletes your personal channel, requires a reason t!delete reason. Channels delete on their own after 5 minutes of being empty.")
      @vc.command(name='create', description='Creates a voice channel with [name] t!vc create [Name]. You can only have 1 vc. VC deletes after 5 minutes of inactivity. You must join your vc within 1 minute or it will be deleted.')
      async def create(self, ctx, arg):
-          category = ctx.category
+          category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
           run = "true"
           if arg == "":
