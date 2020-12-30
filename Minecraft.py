@@ -127,8 +127,12 @@ class minecraft(commands.Cog):
                                         print("created vc")
                     except ValueError:
                          if x == "":
+                              if vcName == "no activity":
+                                        await ctx.send("You can't create a game vc if you're not playing a game.")
+                                        print("no game activity")
                               x = {}
                          else:
+                              await ctx.send("Something broke.")
                               pass
                with open(jsonPath, 'w') as vcWrite:
                     try:
