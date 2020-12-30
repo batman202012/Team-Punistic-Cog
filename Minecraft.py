@@ -90,8 +90,10 @@ class minecraft(commands.Cog):
      async def create(self, ctx, vcName):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
+          print("ran vc create function")
           if vcName == None:
                await ctx.send("You need to type a voice channel name t!vc create ['Name']")
+               print("vcName is equal to None")
           else:
                #finds out who called the command, saves author as owner
                owner = ctx.author.name
@@ -105,9 +107,11 @@ class minecraft(commands.Cog):
                               #check if user has a vc by going through vcOwners
                               if vcOwnList == owner:
                                    await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
+                                   print("already has vc")
                               else:
                                    if vcName == "no activity":
                                         await ctx.send("You can't create a game vc if you're not playing a game.")
+                                        print("no game activity")
                                    else:
                                         #create vc with arg as name
                                         channel = await ctx.guild.create_voice_channel(vcName, category=category)
@@ -120,6 +124,7 @@ class minecraft(commands.Cog):
                                         await asyncio.sleep(60)
                                         empty = asyncio.Future()
                                         asyncio.ensure_future(self.checks(vcId, empty, ctx))
+                                        print("created vc")
                     except ValueError:
                          if x == "":
                               x = {}
