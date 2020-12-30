@@ -91,6 +91,7 @@ class minecraft(commands.Cog):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
           print("ran vc create function")
+          run : bool = true
           if vcName == "":
                await ctx.send("You need to type a voice channel name t!vc create ['Name']")
                print("vcName is equal to None")
@@ -108,23 +109,25 @@ class minecraft(commands.Cog):
                               if vcOwnList == owner:
                                    await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
                                    print("already has vc")
+                                   run = False
                               else:
                                    if vcName == "no activity":
                                         await ctx.send("You can't create a game vc if you're not playing a game.")
                                         print("no game activity")
-                                   else:
-                                        #create vc with arg as name
-                                        channel = await ctx.guild.create_voice_channel(vcName, category=category)
-                                        #create json object nC
-                                        vcId = channel.id
-                                        nC = {owner : vcId}
-                                        x.update(nC)
-                                        #add vcOwner and vcId to json
-                                        await ctx.send("VC created by {0} with name {1}".format(owner, str(channel.name)))
-                                        await asyncio.sleep(60)
-                                        empty = asyncio.Future()
-                                        asyncio.ensure_future(self.checks(vcId, empty, ctx))
-                                        print("created vc")
+                                        run = False
+                         if run:
+                              #create vc with arg as name
+                              channel = await ctx.guild.create_voice_channel(vcName, category=category)
+                              #create json object nC
+                              vcId = channel.id
+                              nC = {owner : vcId}
+                              x.update(nC)
+                              #add vcOwner and vcId to json
+                              await ctx.send("VC created by {0} with name {1}".format(owner, str(channel.name)))
+                              await asyncio.sleep(60)
+                              empty = asyncio.Future()
+                              asyncio.ensure_future(self.checks(vcId, empty, ctx))
+                              print("created vc")
                     except ValueError:
                          if x == "":
                               if vcName == "no activity":
