@@ -125,7 +125,6 @@ class minecraft(commands.Cog):
                               x.update(nC)
                               #add vcOwner and vcId to json
                               await ctx.send("VC created by {0} with name {1}".format(owner, str(channel.name)))
-                              await asyncio.sleep(60)
                               empty = asyncio.Future()
                               asyncio.ensure_future(self.checks(vcId, empty, ctx))
                     except ValueError:
