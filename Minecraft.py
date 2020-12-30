@@ -79,16 +79,20 @@ class minecraft(commands.Cog):
           if arg == '':
                pass
           elif arg == 'create':
-               await ctx.send("Creates a voice channel with [name] t!vc create [Name]. You can only have 1 vc. VC deletes after 5 minutes of inactivity. You must join your vc within 1 minute or it will be deleted.")
+               await ctx.send("Creates a voice channel with <'name'> /vc create <'Name'>. You can only have 1 vc. VC deletes after 5 minutes of inactivity. You must join your vc within 1 minute or it will be deleted.")
           elif arg == 'delete':
-               await ctx.send("Deletes your personal channel, requires a reason t!delete reason. Channels delete on their own after 1 minute of being empty.")
-     @vc.command(name='create', description='Creates a voice channel with [name] t!vc create [Name]. You can only have 1 vc. VC deletes after 1 minute of inactivity. You must join your vc within 1 minute or it will be deleted.')
-     async def create(self, ctx, arg):
+               await ctx.send("Deletes your personal channel, requires a reason /delete ['reason']. Channels delete on their own after 1 minute of being empty.")
+          elif arg == 'gui'
+               await ctx.send("Opens the vc creation gui. use /vc gui")
+          else:
+               await ctx.send("That is not a valid command. Available commands are /vc create, /vc delete [;reason'], /vc gui, /vc help <command>")
+     @vc.command(name='create', description="Creates a voice channel with <'name'> /vc create <'Name'>. You can only have 1 vc. VC deletes after 1 minute of inactivity. You must join your vc within 1 minute or it will be deleted.")
+     async def create(self, ctx, name):
           category = ctx.channel.category
           jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
           run = "true"
           if arg == "":
-               await ctx.send("You need to type a voice channel name t!vc create [Name]")
+               await ctx.send("You need to type a voice channel name t!vc create ['Name']")
           else:
                #finds out who called the command, saves author as owner
                owner = ctx.author.name
@@ -105,9 +109,7 @@ class minecraft(commands.Cog):
                               if vcOwnList == owner:
                                    await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
                                    run = "false"
-                         if run == "false":
-                              pass
-                         else:
+                              else:
                                    #create vc with arg as name
                                    channel = await ctx.guild.create_voice_channel(vcName, category=category)
                                    #create json object nC
@@ -130,7 +132,7 @@ class minecraft(commands.Cog):
                     except ValueError:
                          print("Minecraft.py Minecraft.create Json write failed.")
     
-     @vc.command(name='delete', description='Deletes your personal channel, can include a reason t!vc delete "reason". Channels delete on their own after 5 minutes of being empty.')
+     @vc.command(name='delete', description='Deletes your personal channel, can include a reason /vc delete ["reason"]. Channels delete on their own after 5 minutes of being empty.')
      async def delete(self, ctx, reason = None):
           noVC = "true"
           if reason == None:
@@ -166,7 +168,7 @@ class minecraft(commands.Cog):
           else:
                if noVC == "true":
                     await ctx.send("You can't delete a VC if you don't have one.")
-     @vc.command(name='name', description='Gives you the name of your personal vc, not really useful since your voice channel deletes 5 minutes after being empty.')
+     @vc.command(name='name', description='Gives you the name of your personal vc, not really useful since your voice channel deletes 1 minute after being empty.')
      async def name(self, ctx):
           owner = ctx.author.name
           with open('/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json', 'r') as vcOwners:
