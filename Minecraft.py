@@ -38,7 +38,7 @@ class minecraft(commands.Cog):
                await minecraft.delete(self, ctx, reason)
                await empty.set_result("Channel deleted")
           else:
-               await minecraft.checks(self, vcName, id, empty, ctx)
+               await minecraft.checks(self, id, empty, ctx)
      def pred(self, emojis, mess1):
           return ReactionPredicate.with_emojis(emojis, mess1)
      async def emojiSorter(self, ctx, emoji, mess1):
@@ -103,6 +103,7 @@ class minecraft(commands.Cog):
                owner = ctx.author.name
                #save arg as vcName
                vcName = arg
+               vcId : int
                #opens json file for read
                with open(jsonPath, 'r') as vcOwners:
                #load vcOwners
@@ -120,11 +121,11 @@ class minecraft(commands.Cog):
                                    #create vc with arg as name
                                    channel = await ctx.guild.create_voice_channel(vcName, category=category)
                                    #create json object nC
-                                   nC = {owner : vcId}
+                                   nC = {owner : vcName}
                                    x.update(nC)
                                    print(x)
                                    #add vcOwner and vcName to json
-                                   await ctx.send("VC created by {0} with name {1}".format(owner, str(self.bot.get_channel(vcId).name)))
+                                   await ctx.send("VC created by {0} with name {1}".format(owner, str(channel.name)))
                                    print(vcId)
                                    empty = asyncio.Future()
                                    asyncio.ensure_future(self.checks(vcId, empty, ctx))
