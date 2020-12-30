@@ -204,11 +204,7 @@ class minecraft(commands.Cog):
                     #await messtag1.delete(delay=None)
 
                     embed = discord.Embed(color=0xe02522, title='Voice Channel Creator', description= 'Creates a personal voice channel.')
-<<<<<<< HEAD
                     embed.set_footer(text='This gui is opened by /vc gui. It allows you to create your own voice channel that will delete itself after 1 minute of being empty on creation or 5 minutes of being empty. You can delete it by using /vc delete <reason>. 🎮 for game channel, 📱 for social channel, ❓ for other channel')
-=======
-                    embed.set_footer(text='This gui is opened by t!vc gui. It allows you to create your own voice channel that will delete itself after 1 minute of being empty on creation or 5 minutes of being empty. You can delete it by using t!vc delete <reason>. 🎮 for game channel, 📱 for social channel, ❓ for other channel')
->>>>>>> 4f78a36b967ebc6540d87650467d053c1ae18fa7
                     embed.timestamp = datetime.datetime.utcnow()
 
                     mess1 = await channel.send(embed=embed)
