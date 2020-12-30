@@ -44,7 +44,7 @@ class minecraft(commands.Cog):
                     await self.create(ctx, str(ctx.message.author.activity.name))
                     await mess1.delete()
                else:
-                    await self.create(ctx, "No activity")
+                    await self.create(ctx, "no activity")
                     await mess1.delete()
           elif emoji == "📱":
                await self.create(ctx, str(ctx.author.name) + "'s social channel")
