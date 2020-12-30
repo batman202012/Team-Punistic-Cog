@@ -94,6 +94,7 @@ class minecraft(commands.Cog):
                await ctx.send("Deletes your personal channel, requires a reason t!delete reason. Channels delete on their own after 5 minutes of being empty.")
      @vc.command(name='create', description='Creates a voice channel with [name] t!vc create [Name]. You can only have 1 vc. VC deletes after 5 minutes of inactivity. You must join your vc within 1 minute or it will be deleted.')
      async def create(self, ctx, arg):
+          jsonPath = "/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json"
           run = "true"
           if arg == "":
                await ctx.send("You need to type a voice channel name t!vc create [Name]")
@@ -103,7 +104,7 @@ class minecraft(commands.Cog):
                #save arg as vcName
                vcName = arg
                #opens json file for read
-               with open('/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json', 'r') as vcOwners:
+               with open(jsonPath, 'r') as vcOwners:
                #load vcOwners
                     try:
                          x = json.load(vcOwners)
@@ -117,7 +118,7 @@ class minecraft(commands.Cog):
                               pass
                          else:
                                    #create vc with arg as name
-                                   channel = await ctx.guild.create_voice_channel(vcName)
+                                   channel = await ctx.guild.create_voice_channel(vcName, category="404896049715609600")
                                    #create json object nC
                                    nC = {owner : vcName}
                                    x.update(nC)
@@ -132,7 +133,7 @@ class minecraft(commands.Cog):
                               x = {}
                          else:
                               pass
-               with open('/root/discordbot/data/tpunbot/cogs/Minecraft/vcOwners.json', 'w') as vcWrite:
+               with open(jsonPath, 'w') as vcWrite:
                     try:
                          json.dump(x, vcWrite)
                     except ValueError:
@@ -193,10 +194,10 @@ class minecraft(commands.Cog):
      @vc.command(name="gui", description="Brings up gui for making you own voice channel")
      async def gui(self, ctx):
           #gets channel for bot message
-          
-          channel = self.bot.get_channel(793599653387567123)
+          dsChannel = 793599653387567123
+          channel = self.bot.get_channel(dsChannel)
           #vcrole1 = get(creator.guild.roles, id=703562188224331777)
-          if ctx.message.channel.id == 793599653387567123:
+          if ctx.message.channel.id == dsChannel:
                #if any(role.id == 703562188224331777 for role in ctx.message.author.roles):
                     #await creator.remove_roles(vcrole1)
                     #await ctx.send("not important message")
