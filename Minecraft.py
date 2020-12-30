@@ -103,7 +103,6 @@ class minecraft(commands.Cog):
                owner = ctx.author.name
                #save arg as vcName
                vcName = arg
-               vcId : int
                #opens json file for read
                with open(jsonPath, 'r') as vcOwners:
                #load vcOwners
@@ -121,7 +120,8 @@ class minecraft(commands.Cog):
                                    #create vc with arg as name
                                    channel = await ctx.guild.create_voice_channel(vcName, category=category)
                                    #create json object nC
-                                   nC = {owner : vcName}
+                                   vcId = channel.id
+                                   nC = {owner : vcId}
                                    x.update(nC)
                                    print(x)
                                    #add vcOwner and vcName to json
