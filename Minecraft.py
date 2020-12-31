@@ -107,9 +107,10 @@ class minecraft(commands.Cog):
                          #closes json file from read
                          for vcOwnList, vcId in x.items():
                               #check if user has a vc by going through vcOwners
-                              if vcOwnList == owner:
-                                   await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
-                                   run = False
+                              if run:
+                                   if vcOwnList == owner:
+                                        await ctx.send("You already have a vc created named {0}".format(str(self.bot.get_channel(vcId).name)))
+                                        run = False
                          if run:
                               #create vc with arg as name
                               channel = await ctx.guild.create_voice_channel(vcName, category=category)
